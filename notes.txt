@@ -1,0 +1,168 @@
+RestController -> Service -> Repository -> Database (use DataLoader to preload data)
+
+// API_ENDPOINTS
+#Ernest
+GET     /ownerAuth
+GET     /ownerAuth/{id}
+POST    /ownerAuth
+PUT     /ownerAuth/{id}
+DELETE  /ownerAuth/{id}
+
+#Ernest
+GET     /owner
+GET     /owner/{id}
+POST    /owner
+PUT     /owner/{id}
+DELETE  /owner/{id}
+
+#Keith
+GET     /pet
+GET     /pet/{id}
+POST    /pet
+PUT     /pet/{id}
+DELETE  /pet/{id}
+
+#Jasmine
+GET     /petData
+GET     /petData/{id}
+POST    /petData
+PUT     /petData/{id}
+DELETE  /petData/{id}
+
+#Dexter
+GET     /chatRoom
+GET     /chatRoom/{id}
+POST    /chatRoom
+PUT     /chatRoom/{id}
+DELETE  /chatRoom/{id}
+
+#Dexter
+GET     /chatMessage
+GET     /chatMessage/{id}
+POST    /chatMessage
+PUT     /chatMessage/{id}
+DELETE  /chatMessage/{id}
+
+
+
+// ENTITIES
+@Entity
+OwnerAuth.java
+{
+    "id": Long,
+    "email": String,
+    "password": String,
+    "ownerId": Long
+}
+
+
+@Entity
+Owner.java
+{
+    "id": Long,
+    "name": String,
+    "ownerMatches": List<Long>, // Owner.id
+    "areaLocation": String,
+    "ownerAuth": OwnerAuth,     // @OneToOne
+    "pets": List<Pet>           // @OneToMany
+}
+
+
+@Entity
+Pet.java
+{
+    "id": Long,
+    "name": String,
+    "gender": Enum<Gender>,
+    "age": Integer,
+    "isNeutered": boolean,
+    "pictures": List<String>,
+    "description": String,
+    "owner": Owner,             // @ManyToOne
+    "petData": PetData          // @ManyToOne
+}
+
+
+@Entity
+PetData.java
+{
+    "id": Long,
+    "breed": String,
+    "animalGroup": String,
+    "pet": List<Long>           // Pet.id
+}
+
+
+@Entity
+ChatRoom.java
+{
+    "id": Long,
+    "ownerIds": List<Long>      // @OneToMany - Owner.id
+}
+
+
+@Entity
+ChatMessage.java
+{
+    "id": Long,
+    "dateTimeStamp": DateTime,
+    "message": String,
+    "chatRoomId": Long,         // @OneToOne - ChatRoom.id
+    "ownerId": Long             // @OneToOne - Owner.id
+}
+
+
+
+// POJOS
+(Enum) EGender.java
+{
+    MALE, FEMALE
+}
+
+
+DataLoader
+
+
+ErrorResponseDto
+{
+    "dateTimeStamp": DateTime,
+    "errorMessage": String
+}
+
+
+GlobalExceptionHandler
+
+
+Exception
+
+
+
+// REFERENCE
+owners
+    Integer id                            -- Primary key, auto-increment
+    String areaLocation                    -- String VarChar 255
+    String name                            -- String VarChar 255
+    String email                        -- String VarChar 255
+    Integer[] ownerMatches                -- Int[]. Do we keep this?
+    ownerAuth                            -- @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL) @JsonManagedReference
+    List<Pet> pets                        -- @OneToMany(mappedBy = "owner, cascade = CascadeType.ALL) @JsonManagedReference
+ownerAuth
+    Integer id                            -- Primary key, auto-increment
+    String password                        -- String VarChar 255
+    owner                                -- @OneToOne    @JoinColumn(name = "owner_id", referencedColumnName = "id") @JsonBackReference
+
+pets
+    Integer id                            -- Primary key, auto-increment
+    petGender gender                    -- Do you want to save this as a String, or maybe a boolean? (0/false for Female, 1/true for Male)
+    String name                            -- String VarChar 255
+    String picture[]                    -- String[] TEXT[] -- or can the cloudinary URL be less than 255 chars?
+    String description                    -- String VarChar 255 (255 character limit), or TEXT (exceedingly long)
+    isNeutered                            -- Boolean
+    owner                                -- @ManyToOne(optional = false) @JsonBackReference
+    breed                                -- @ManyToOne(optional = false) @JsonBackReference
+
+breeds
+    Integer id                            -- Primary key, auto-increment
+    String name                            -- String VarChar 255
+    String type                            -- String VarChar 255 (like cat, dog, etc)
+    List<Pet> pets                        -- @OneToMany(mappedBy = "breed", cascade = cascadeType.ALL) @JsonManagedReference
