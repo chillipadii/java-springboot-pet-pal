@@ -166,3 +166,30 @@ breeds
     String name                            -- String VarChar 255
     String type                            -- String VarChar 255 (like cat, dog, etc)
     List<Pet> pets                        -- @OneToMany(mappedBy = "breed", cascade = cascadeType.ALL) @JsonManagedReference
+
+
+// POSTGRES_SQL_STATEMENTS
+select * from pg_catalog.pg_database;
+select * from pg_catalog.pg_user;
+select * from pg_catalog.pg_tables where tableowner='shopper';
+
+create user crm_admin with password 'crm_password';
+alter table customer owner to crm_admin;
+alter table interaction owner to crm_admin;
+alter database simple_crm owner to crm_admin;
+grant all privileges on database simple_crm to crm_admin;
+grant all privileges on schema public to crm_admin;
+grant all privileges on all tables in schema public to crm_admin;
+grant all privileges on all sequences in schema public to crm_admin;
+alter default privileges for user crm_admin in schema public grant all privileges on tables to crm_admin;
+alter default privileges for user crm_admin in schema public grant all privileges on sequences to crm_admin;
+
+SELECT 'ALTER TABLE '|| schemaname || '.' || tablename ||' OWNER TO my_new_owner;'
+FROM pg_tables WHERE NOT schemaname IN ('pg_catalog', 'information_schema')
+ORDER BY schemaname, tablename;
+
+select current_user;
+-- Need to run this in both crm_admin user and postgres user
+reassign owned by crm_admin to postgres;
+drop owned by crm_admin cascade;
+drop user if exists crm_admin;
