@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Table(name = "owners")
 public class Owner {
