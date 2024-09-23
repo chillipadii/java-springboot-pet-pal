@@ -105,7 +105,7 @@ ChatRoom.java
 ChatMessage.java
 {
     "id": Long,
-    "dateTimeStamp": DateTime,
+    "timestamp": LocalDateTime,
     "message": String,
     "chatRoomId": Long,         // @OneToOne - ChatRoom.id
     "ownerId": Long             // @OneToOne - Owner.id
@@ -125,7 +125,7 @@ DataLoader
 
 ErrorResponseDto
 {
-    "dateTimeStamp": DateTime,
+    "timestamp": LocalDateTime,
     "errorMessage": String
 }
 
