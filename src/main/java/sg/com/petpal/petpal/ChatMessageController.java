@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sg.com.petpal.petpal.model.ChatMessage;
+
 @RestController
 @RequestMapping("/chat-message")
 public class ChatMessageController {

@@ -1,4 +1,4 @@
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.model;
 
 import java.util.UUID;
 

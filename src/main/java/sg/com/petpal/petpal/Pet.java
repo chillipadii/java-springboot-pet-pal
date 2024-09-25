@@ -41,9 +41,9 @@ public class Pet {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private Owner owner;
+    // @ManyToOne
+    // @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    // private Owner owner;
 
     @ManyToOne
     @JoinColumn(name = "pet_data_id", referencedColumnName = "id")
