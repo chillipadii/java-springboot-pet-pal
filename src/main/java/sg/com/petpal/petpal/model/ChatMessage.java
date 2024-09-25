@@ -32,8 +32,11 @@ public class ChatMessage {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    @Column(name = "created_timestamp")
+    private LocalDateTime createdTimestamp;
+
+    @Column(name = "updated_timestamp")
+    private LocalDateTime updatedTimestamp;
 
     @Column(name = "message")
     private String message;

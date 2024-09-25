@@ -98,7 +98,7 @@ public class DataLoader implements CommandLineRunner {
         for (int i = 0; i < chatRooms.size(); i++) {
             ChatMessage newChatMessage = ChatMessage.builder()
                 .id(UUID.randomUUID())
-                .timestamp(LocalDateTime.now())
+                .createdTimestamp(LocalDateTime.now())
                 .message("Chat Message " + i)
                 .chatRoomId(chatRooms.get(i))
                 .build();
