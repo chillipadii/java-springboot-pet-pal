@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -44,12 +45,12 @@ public class ChatMessage {
     private String message;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private Owner owner;
+
+    @ManyToOne(optional = true)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
     @JsonBackReference
-    private ChatRoom chatRoomId;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private Owner ownerId;
+    private ChatRoom chatRoom;
     
 }

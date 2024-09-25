@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class ChatRoom {
     )
     private List<Owner> owners;
 
-    @OneToOne(mappedBy = "chatRoomId")
-    private ChatMessage chatMessage;
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessage;
+    
 }

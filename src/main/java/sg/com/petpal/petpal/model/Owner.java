@@ -75,12 +75,14 @@ public class Owner {
     //     this.areaLocation = areaLocation;
     // }
 
+    // Dexter - Start
     @ManyToMany(mappedBy = "owners")
     @JsonBackReference
     private List<ChatRoom> chatRooms;
 
-    @OneToOne(mappedBy = "ownerId")
+    @OneToOne(mappedBy = "owner")
     private ChatMessage chatMessage;
+    // Dexter - End
 }
 
 // @Getter
