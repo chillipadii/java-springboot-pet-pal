@@ -105,7 +105,8 @@ ChatRoom.java
 ChatMessage.java
 {
     "id": UUID,
-    "timestamp": LocalDateTime,
+    "createdTimestamp": LocalDateTime,
+    "updatedTimestamp": LocalDateTime,
     "message": String,
     "chatRoomId": Long,         // @OneToOne - ChatRoom.id
     "ownerId": Long             // @OneToOne - Owner.id
