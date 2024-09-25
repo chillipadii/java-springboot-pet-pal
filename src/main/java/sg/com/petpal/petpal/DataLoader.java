@@ -4,6 +4,8 @@ package sg.com.petpal.petpal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import sg.com.petpal.petpal.model.ChatMessage;
 import sg.com.petpal.petpal.model.ChatRoom;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
@@ -17,7 +19,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
-public class DataLoader implements CommandLineRunner {
+// public class DataLoader implements CommandLineRunner {
+public class DataLoader {
 
     //@Autowired
     //private OwnerRepository ownerRepository;
@@ -34,8 +37,10 @@ public class DataLoader implements CommandLineRunner {
             this.chatMessageRepository = chatMessageRepository;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    // @Override
+    // public void run(String... args) throws Exception {
+    @PostConstruct
+    public void loadData() {
 
         deleteAllExistingData();
         
@@ -77,6 +82,7 @@ public class DataLoader implements CommandLineRunner {
         petRepository.save(pet3);
 
         loadChatMessageData(loadChatRoomData());
+        
     }
 
     private void deleteAllExistingData() {
@@ -85,25 +91,25 @@ public class DataLoader implements CommandLineRunner {
         chatMessageRepository.deleteAll();
     }
 
-    private List<ChatRoom> loadChatRoomData() {
-        List<ChatRoom> chatRooms = new ArrayList<>();
+    private void loadChatMessageData(ChatRoom newChatRoom) {
         for (int i = 0; i < 3; i++) {
-            ChatRoom newChatRoom = ChatRoom.builder().id(UUID.randomUUID()).build();
-            chatRooms.add(newChatRoom);
-        }
-        return chatRooms;
-    }
-
-    private void loadChatMessageData(List<ChatRoom> chatRooms) {
-        for (int i = 0; i < chatRooms.size(); i++) {
             ChatMessage newChatMessage = ChatMessage.builder()
-                .id(UUID.randomUUID())
                 .createdTimestamp(LocalDateTime.now())
+                .updatedTimestamp(LocalDateTime.now())
                 .message("Chat Message " + i)
-                .chatRoomId(chatRooms.get(i))
+                .owner(null)
+                .chatRoom(newChatRoom)
                 .build();
             chatMessageRepository.save(newChatMessage);
         }
+    }
+
+    private ChatRoom loadChatRoomData() {
+        ChatRoom newChatRoom = ChatRoom.builder()
+            .owners(null)
+            .build();
+            chatRoomRepository.save(newChatRoom);
+        return newChatRoom;
     }
 
 }
