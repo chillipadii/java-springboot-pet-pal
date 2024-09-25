@@ -96,15 +96,15 @@ PetData.java
 @Entity
 ChatRoom.java
 {
-    "id": Long,
-    "ownerIds": List<Long>      // @OneToMany - Owner.id
+    "id": UUID,
+    "ownerIds": List<Long>      // @ManyToMany - Owner.id
 }
 
 
 @Entity
 ChatMessage.java
 {
-    "id": Long,
+    "id": UUID,
     "timestamp": LocalDateTime,
     "message": String,
     "chatRoomId": Long,         // @OneToOne - ChatRoom.id
