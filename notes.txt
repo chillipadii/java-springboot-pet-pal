@@ -61,10 +61,10 @@ Owner.java
 {
     "id": Long,
     "name": String,
-    "ownerMatches": List<Long>, // Owner.id
+    "ownerMatches": List<Owner>,    // Owner.id
     "areaLocation": String,
-    "ownerAuth": OwnerAuth,     // @OneToOne
-    "pets": List<Pet>           // @OneToMany
+    "ownerAuth": OwnerAuth,         // @OneToOne
+    "pets": List<Pet>               // @OneToMany
 }
 
 
@@ -78,8 +78,8 @@ Pet.java
     "isNeutered": boolean,
     "pictures": List<String>,
     "description": String,
-    "owner": Owner,             // @ManyToOne
-    "petData": PetData          // @ManyToOne
+    "owner": Owner,                 // @ManyToOne
+    "petData": PetData              // @ManyToOne
 }
 
 
@@ -89,7 +89,7 @@ PetData.java
     "id": Long,
     "breed": String,
     "animalGroup": String,
-    "pet": List<Long>           // Pet.id
+    "pet": List<Pet>                // Pet.id
 }
 
 
@@ -97,7 +97,8 @@ PetData.java
 ChatRoom.java
 {
     "id": UUID,
-    "ownerIds": List<Long>      // @ManyToMany - Owner.id
+    "owners": List<Owner>,        // @ManyToMany - Owner.id
+    "chatMessages": List<ChatMessages>
 }
 
 
@@ -108,8 +109,8 @@ ChatMessage.java
     "createdTimestamp": LocalDateTime,
     "updatedTimestamp": LocalDateTime,
     "message": String,
-    "chatRoomId": Long,         // @OneToOne - ChatRoom.id
-    "ownerId": Long             // @OneToOne - Owner.id
+    "owner": Owner                  // @OneToOne - Owner.id
+    "chatRoom": ChatRoom,           // @ManyToOne - ChatRoom.id
 }
 
 
