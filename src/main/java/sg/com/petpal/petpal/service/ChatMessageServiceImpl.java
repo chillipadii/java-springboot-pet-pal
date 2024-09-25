@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import sg.com.petpal.petpal.exception.ChatMessageNotFoundException;
 import sg.com.petpal.petpal.model.ChatMessage;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
 
+@Service
 public class ChatMessageServiceImpl implements ChatMessageService {
 
     private ChatMessageRepository chatMessageRepository;
