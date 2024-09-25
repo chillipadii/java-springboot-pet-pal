@@ -1,12 +1,17 @@
 package sg.com.petpal.petpal.model;
 
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,8 +33,15 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
-    // private Owner ownerId;
+    
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "chat_room_owner",
+        joinColumns = @JoinColumn(name = "chat_room_id"),
+        inverseJoinColumns = @JoinColumn(name = "owner_id")
+    )
+    private List<Owner> owners;
 
-    // @OneToOne(mappedBy = "chatRoomId")
-    // private ChatMessage chatMessage;
+    @OneToOne(mappedBy = "chatRoomId")
+    private ChatMessage chatMessage;
 }

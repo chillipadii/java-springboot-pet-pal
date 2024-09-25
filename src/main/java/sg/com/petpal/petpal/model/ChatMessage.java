@@ -38,11 +38,12 @@ public class ChatMessage {
     @Column(name = "message")
     private String message;
 
-    // @OneToOne(cascade = CascadeType.ALL)
-    // @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
-    // private ChatRoom chatRoomId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
+    private ChatRoom chatRoomId;
 
-    // @OneToOne
-    // private Owner ownerId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private Owner ownerId;
     
 }
