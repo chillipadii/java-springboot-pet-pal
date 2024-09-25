@@ -39,7 +39,7 @@ public class PetService {
             pet.setNeutered(updatedPet.isNeutered());
             pet.setPictures(updatedPet.getPictures());
             pet.setDescription(updatedPet.getDescription());
-            // pet.setOwner(updatedPet.getOwner());
+            pet.setOwner(updatedPet.getOwner());
             pet.setPetData(updatedPet.getPetData());
             return petRepository.save(pet);
         }).orElseGet(() -> {
