@@ -44,6 +44,6 @@ public class ChatRoom {
     private List<Owner> owners;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private List<ChatMessage> chatMessage;
-    
+    private List<ChatMessage> chatMessages;
+
 }
