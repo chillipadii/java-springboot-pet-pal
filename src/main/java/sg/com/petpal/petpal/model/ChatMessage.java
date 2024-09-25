@@ -3,6 +3,8 @@ package sg.com.petpal.petpal.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,6 +45,7 @@ public class ChatMessage {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
+    @JsonBackReference
     private ChatRoom chatRoomId;
 
     @OneToOne(cascade = CascadeType.ALL)
