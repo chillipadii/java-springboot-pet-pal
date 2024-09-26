@@ -1,4 +1,5 @@
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.model;
+
 
 import jakarta.persistence.*;
 import lombok.Builder;

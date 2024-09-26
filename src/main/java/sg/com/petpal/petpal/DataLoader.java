@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import sg.com.petpal.petpal.model.Gender;
+import sg.com.petpal.petpal.model.Pet;
+import sg.com.petpal.petpal.repository.PetRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

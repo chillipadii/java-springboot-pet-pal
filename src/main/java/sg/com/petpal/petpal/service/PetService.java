@@ -1,8 +1,9 @@
 
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.service;
 
-import sg.com.petpal.petpal.Pet;
-import sg.com.petpal.petpal.PetRepository;
+import sg.com.petpal.petpal.model.Pet;
+import sg.com.petpal.petpal.repository.PetRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

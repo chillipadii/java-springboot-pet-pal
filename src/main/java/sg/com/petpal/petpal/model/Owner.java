@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,15 +43,17 @@ public class Owner {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank.")
     @Column(name = "name")
     private String name;
 
-    // @Valid
-    // @Column(name = "ownerMatches")
-    // private List<ValidOwnerMatches> ownerMatches;
+    // Fix: Use @ElementCollection to handle non-entity collection
+    @Valid
+    @ElementCollection
+    @Column(name = "ownerMatches")
+    private List<ValidOwnerMatches> ownerMatches;
 
-    @NotBlank(message = "areaLocation cannot be blank.")
+    @NotBlank(message = "Area location cannot be blank.")
     @Column(name = "areaLocation")
     private String areaLocation;
 
@@ -85,12 +89,16 @@ public class Owner {
     // Dexter - End
 }
 
-// @Getter
-// @Setter
-// @AllArgsConstructor
-// class ValidOwnerMatches {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Embeddable // Added this annotation
+class ValidOwnerMatches {
 
-//     @NotNull(message = "Value cannot be null")
-//     @Min(value = 1, message = "Value must be greater than or equal to 1")
-//     private Long value;
-// }
+    @NotNull(message = "Value cannot be null")
+    @Column(name = "value")
+    //@Min(value = 1, message = "Value must be greater than or equal to 1")
+    private Long value;
+}

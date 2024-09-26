@@ -1,17 +1,17 @@
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.model;
 
-import jakarta.persistence.*;
-//import lombok.Builder;
+import akarta.persisten
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import 
+
 
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-//@Builder
 @Entity
 @Table(name = "pet_data")
 public class PetData {
@@ -31,3 +31,5 @@ public class PetData {
     @Column(name = "pet")
     private List<Long> pet;
 }
+
+    

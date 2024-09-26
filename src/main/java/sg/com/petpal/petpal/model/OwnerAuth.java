@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +34,12 @@ public class OwnerAuth {
     private Long id;
 
     @Email
+    @NotBlank(message = "Email cannot be blank.")
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
+    @NotBlank(message = "Password cannot be blank.")
     private String password;
 
     @OneToOne
