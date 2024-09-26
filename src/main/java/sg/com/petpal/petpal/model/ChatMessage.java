@@ -48,7 +48,7 @@ public class ChatMessage {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Owner owner;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
     @JsonBackReference
     private ChatRoom chatRoom;
