@@ -1,51 +1,36 @@
 package sg.com.petpal.petpal;
 
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
-import sg.com.petpal.petpal.model.ChatMessage;
-import sg.com.petpal.petpal.model.ChatRoom;
-import sg.com.petpal.petpal.model.Owner;
-import sg.com.petpal.petpal.repository.ChatMessageRepository;
-import sg.com.petpal.petpal.repository.ChatRoomRepository;
-import sg.com.petpal.petpal.repository.OwnerRepository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
+import sg.com.petpal.petpal.model.ChatMessage;
+import sg.com.petpal.petpal.model.ChatRoom;
 import sg.com.petpal.petpal.model.Gender;
+import sg.com.petpal.petpal.model.Owner;
 import sg.com.petpal.petpal.model.Pet;
+import sg.com.petpal.petpal.repository.ChatMessageRepository;
+import sg.com.petpal.petpal.repository.ChatRoomRepository;
 import sg.com.petpal.petpal.repository.PetRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 @Component
-// public class DataLoader implements CommandLineRunner {
 public class DataLoader {
 
-    //@Autowired
-    //private OwnerRepository ownerRepository;
-
-    // @Autowired
     private PetRepository petRepository;
-    private OwnerRepository ownerRepository;
     private ChatRoomRepository chatRoomRepository;
     private ChatMessageRepository chatMessageRepository;
 
-    public DataLoader(PetRepository petRepository, OwnerRepository ownerRepository,
+    public DataLoader(PetRepository petRepository,
         ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
             this.petRepository = petRepository;
-            this.ownerRepository = ownerRepository;
             this.chatRoomRepository = chatRoomRepository;
             this.chatMessageRepository = chatMessageRepository;
     }
 
-    // @Override
-    // public void run(String... args) throws Exception {
     @PostConstruct
     public void loadData() {
 
