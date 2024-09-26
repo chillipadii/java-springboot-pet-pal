@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,7 +42,9 @@ public class Owner {
     @Column(name = "name")
     private String name;
 
+    // Fix: Use @ElementCollection to handle non-entity collection
     @Valid
+    @ElementCollection
     @Column(name = "ownerMatches")
     private List<ValidOwnerMatches> ownerMatches;
 
@@ -74,9 +78,13 @@ public class Owner {
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Embeddable // Added this annotation
 class ValidOwnerMatches {
 
     @NotNull(message = "Value cannot be null")
-    @Min(value = 1, message = "Value must be greater than or equal to 1")
+    @Column(name = "value")
+    //@Min(value = 1, message = "Value must be greater than or equal to 1")
     private Long value;
 }
