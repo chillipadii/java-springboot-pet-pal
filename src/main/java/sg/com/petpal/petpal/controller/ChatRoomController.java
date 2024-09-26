@@ -1,4 +1,4 @@
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
