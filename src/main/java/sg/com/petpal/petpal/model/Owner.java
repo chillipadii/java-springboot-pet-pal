@@ -36,7 +36,7 @@ public class Owner {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank.")
     @Column(name = "name")
     private String name;
 
@@ -44,7 +44,7 @@ public class Owner {
     @Column(name = "ownerMatches")
     private List<ValidOwnerMatches> ownerMatches;
 
-    @NotBlank(message = "areaLocation cannot be blank.")
+    @NotBlank(message = "Area location cannot be blank.")
     @Column(name = "areaLocation")
     private String areaLocation;
 
