@@ -48,7 +48,7 @@ public class ChatMessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ChatMessage> deleteChatMessageById(@PathVariable UUID id) {
+    public ResponseEntity<HttpStatus> deleteChatMessageById(@PathVariable UUID id) {
         chatMessageService.deleteChatMessageById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
