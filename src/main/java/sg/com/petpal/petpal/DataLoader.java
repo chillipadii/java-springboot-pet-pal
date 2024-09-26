@@ -8,8 +8,10 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import sg.com.petpal.petpal.model.ChatMessage;
 import sg.com.petpal.petpal.model.ChatRoom;
+import sg.com.petpal.petpal.model.Owner;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
 import sg.com.petpal.petpal.repository.ChatRoomRepository;
+import sg.com.petpal.petpal.repository.OwnerRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,12 +29,14 @@ public class DataLoader {
 
     // @Autowired
     private PetRepository petRepository;
+    private OwnerRepository ownerRepository;
     private ChatRoomRepository chatRoomRepository;
     private ChatMessageRepository chatMessageRepository;
 
-    public DataLoader(PetRepository petRepository, 
+    public DataLoader(PetRepository petRepository, OwnerRepository ownerRepository,
         ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
             this.petRepository = petRepository;
+            this.ownerRepository = ownerRepository;
             this.chatRoomRepository = chatRoomRepository;
             this.chatMessageRepository = chatMessageRepository;
     }
@@ -81,7 +85,17 @@ public class DataLoader {
         //ownerRepository.save(owner);
         petRepository.save(pet3);
 
-        loadChatMessageData(loadChatRoomData());
+        List<Owner> owners = loadOwnerData(3);
+        ChatRoom newChatRoom = loadChatRoomData(owners);
+        
+        chatRoomRepository.save(newChatRoom);
+        ownerRepository.saveAll(owners);
+
+        // chatMessageRepository.saveAll(loadChatMessageData(3, owners.get(0), newChatRoom));
+        List<ChatMessage> chatMessages = loadChatMessageData(3, owners, newChatRoom);
+        // for (ChatMessage chatMessage : chatMessages) {
+        //     chatMessageRepository.save(chatMessage);
+        // }
         
     }
 
@@ -91,25 +105,43 @@ public class DataLoader {
         chatMessageRepository.deleteAll();
     }
 
-    private void loadChatMessageData(ChatRoom newChatRoom) {
-        for (int i = 0; i < 3; i++) {
+    // Create 3 owners
+    private List<Owner> loadOwnerData(int quantity) {
+        List<Owner> owners = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            Owner newOwner = Owner.builder()
+                .name("petpalowner" + i)
+                .areaLocation("NTU Street " + i)
+                .ownerAuth(null)
+                .build();
+            owners.add(newOwner);
+        }
+        return owners;
+    }
+    
+    // Create 1 chat room
+    private ChatRoom loadChatRoomData(List<Owner> owners) {
+        ChatRoom newChatRoom = ChatRoom.builder()
+            .owners(owners)
+            .build();
+        return newChatRoom;
+    }
+
+    // Create 3 chat messages for 1 owner, 1 chat room
+    private List<ChatMessage> loadChatMessageData(int quantity, List<Owner> owners, ChatRoom newChatRoom) {
+        Owner owner = ownerRepository.findById(1L).get();
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
             ChatMessage newChatMessage = ChatMessage.builder()
                 .createdTimestamp(LocalDateTime.now())
                 .updatedTimestamp(LocalDateTime.now())
                 .message("Chat Message " + i)
-                .owner(null)
+                .owner(owner)
                 .chatRoom(newChatRoom)
                 .build();
-            chatMessageRepository.save(newChatMessage);
+            chatMessages.add(newChatMessage);
         }
-    }
-
-    private ChatRoom loadChatRoomData() {
-        ChatRoom newChatRoom = ChatRoom.builder()
-            .owners(null)
-            .build();
-            chatRoomRepository.save(newChatRoom);
-        return newChatRoom;
+        return chatMessages;
     }
 
 }
