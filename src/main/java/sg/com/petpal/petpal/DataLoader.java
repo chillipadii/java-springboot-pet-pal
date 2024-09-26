@@ -3,6 +3,11 @@ package sg.com.petpal.petpal;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import sg.com.petpal.petpal.model.Gender;
+import sg.com.petpal.petpal.model.Pet;
+import sg.com.petpal.petpal.repository.PetRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
