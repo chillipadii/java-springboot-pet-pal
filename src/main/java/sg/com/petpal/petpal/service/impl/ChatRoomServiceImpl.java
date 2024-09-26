@@ -3,11 +3,14 @@ package sg.com.petpal.petpal.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import sg.com.petpal.petpal.exception.ChatRoomNotFoundException;
 import sg.com.petpal.petpal.model.ChatRoom;
 import sg.com.petpal.petpal.repository.ChatRoomRepository;
 import sg.com.petpal.petpal.service.ChatRoomService;
 
+@Service
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private ChatRoomRepository chatRoomRepository;
