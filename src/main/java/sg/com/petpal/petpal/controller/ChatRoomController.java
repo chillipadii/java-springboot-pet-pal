@@ -49,6 +49,7 @@ public class ChatRoomController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteChatRoomById(UUID id) {
+        chatRoomService.deleteChatRoomById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
