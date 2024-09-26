@@ -1,4 +1,4 @@
-package sg.com.petpal.petpal;
+package sg.com.petpal.petpal.controller;
 
 
 import sg.com.petpal.petpal.model.Pet;
