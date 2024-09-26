@@ -1,4 +1,4 @@
-package sg.com.petpal.petpal.service;
+package sg.com.petpal.petpal.service.impl;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import sg.com.petpal.petpal.dto.OwnerCreateDTO;
 import sg.com.petpal.petpal.dto.OwnerUpdateDTO;
 import sg.com.petpal.petpal.model.Owner;
+import sg.com.petpal.petpal.service.OwnerService;
 
 @Primary
 @Service
