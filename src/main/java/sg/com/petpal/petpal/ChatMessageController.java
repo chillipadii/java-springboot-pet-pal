@@ -29,7 +29,7 @@ public class ChatMessageController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<ChatMessage>> findAllChatMessage() {
-        return ResponseEntity.ok(chatMessageService.findAllChatMessage());
+        return ResponseEntity.ok(chatMessageService.findAllChatMessages());
     }
 
     @GetMapping("/{id}")
