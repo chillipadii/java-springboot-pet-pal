@@ -76,11 +76,11 @@ public class Owner {
     // }
 
     // Dexter - Start
-    @ManyToMany(mappedBy = "owners")
+    @ManyToMany(mappedBy = "owners", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonBackReference
     private List<ChatRoom> chatRooms;
 
-    @OneToOne(mappedBy = "owner")
+    @OneToOne(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private ChatMessage chatMessage;
     // Dexter - End
 }

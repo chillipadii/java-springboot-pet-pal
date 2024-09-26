@@ -44,7 +44,7 @@ public class ChatMessage {
     @Column(name = "message")
     private String message;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Owner owner;
 

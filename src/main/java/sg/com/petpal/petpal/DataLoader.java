@@ -87,15 +87,11 @@ public class DataLoader {
 
         List<Owner> owners = loadOwnerData(3);
         ChatRoom newChatRoom = loadChatRoomData(owners);
+        List<ChatMessage> chatMessages = loadChatMessageData(3, owners, newChatRoom);
         
         chatRoomRepository.save(newChatRoom);
         ownerRepository.saveAll(owners);
-
-        // chatMessageRepository.saveAll(loadChatMessageData(3, owners.get(0), newChatRoom));
-        List<ChatMessage> chatMessages = loadChatMessageData(3, owners, newChatRoom);
-        // for (ChatMessage chatMessage : chatMessages) {
-        //     chatMessageRepository.save(chatMessage);
-        // }
+        // chatMessageRepository.saveAll(chatMessages);
         
     }
 
@@ -121,22 +117,20 @@ public class DataLoader {
     
     // Create 1 chat room
     private ChatRoom loadChatRoomData(List<Owner> owners) {
-        ChatRoom newChatRoom = ChatRoom.builder()
+        return ChatRoom.builder()
             .owners(owners)
             .build();
-        return newChatRoom;
     }
 
     // Create 3 chat messages for 1 owner, 1 chat room
     private List<ChatMessage> loadChatMessageData(int quantity, List<Owner> owners, ChatRoom newChatRoom) {
-        Owner owner = ownerRepository.findById(1L).get();
         List<ChatMessage> chatMessages = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             ChatMessage newChatMessage = ChatMessage.builder()
                 .createdTimestamp(LocalDateTime.now())
                 .updatedTimestamp(LocalDateTime.now())
                 .message("Chat Message " + i)
-                .owner(owner)
+                .owner(owners.get(0))
                 .chatRoom(newChatRoom)
                 .build();
             chatMessages.add(newChatMessage);

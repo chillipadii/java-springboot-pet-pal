@@ -35,7 +35,7 @@ public class ChatRoom {
     @Column(name = "id")
     private UUID id;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
         name = "chat_room_owner",
         joinColumns = @JoinColumn(name = "chat_room_id"),
