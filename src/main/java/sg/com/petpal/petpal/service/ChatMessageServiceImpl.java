@@ -20,7 +20,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public List<ChatMessage> findAllChatMessage() {
+    public List<ChatMessage> findAllChatMessages() {
         return chatMessageRepository.findAll();
     }
 
@@ -31,6 +31,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     public ChatMessage createChatMessage(ChatMessage chatMessage) {
+        chatMessage.setCreatedTimestamp(LocalDateTime.now());
+        chatMessage.setUpdatedTimestamp(LocalDateTime.now());
         return chatMessageRepository.save(chatMessage);
     }
 

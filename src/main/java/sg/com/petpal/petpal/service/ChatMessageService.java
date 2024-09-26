@@ -7,7 +7,7 @@ import sg.com.petpal.petpal.model.ChatMessage;
 
 public interface ChatMessageService {
 
-    List<ChatMessage> findAllChatMessage();
+    List<ChatMessage> findAllChatMessages();
 
     ChatMessage findChatMessageById(UUID id);
     
