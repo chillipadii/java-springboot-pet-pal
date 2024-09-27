@@ -66,9 +66,9 @@ public class Owner {
         }
     }
 
-    // @OneToMany(mappedBy = "owner, cascade = CascadeType.ALL)
-    // @JsonManagedReference
-    // private List<Pet> pets;
+    @OneToMany (mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Pet> pets;
 
     // public Owner(String name, @Valid List<ValidOwnerMatches> ownerMatches, String areaLocation) {
     //     this();
