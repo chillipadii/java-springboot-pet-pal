@@ -24,7 +24,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-// @Table(name = "owners")
 @Table(name = "owner_auth")
 public class OwnerAuth {
 
