@@ -15,17 +15,12 @@ import sg.com.petpal.petpal.model.Pet;
 import sg.com.petpal.petpal.model.PetData;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
 import sg.com.petpal.petpal.repository.ChatRoomRepository;
-import sg.com.petpal.petpal.repository.OwnerRepository;
 import sg.com.petpal.petpal.repository.PetDataRepository;
 import sg.com.petpal.petpal.repository.PetRepository;
 
 @Component
 public class DataLoader {
 
-    // @Autowired
-    // private OwnerRepository ownerRepository;
-
-    // @Autowired
     private PetRepository petRepository;
     private PetDataRepository petDataRepository;
     private ChatRoomRepository chatRoomRepository;
