@@ -42,10 +42,10 @@ public class ChatRoom {
         joinColumns = @JoinColumn(name = "chat_room_id"),
         inverseJoinColumns = @JoinColumn(name = "owner_id")
     )
+    @JsonBackReference
     private List<Owner> owners;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    @JsonBackReference
     private List<ChatMessage> chatMessages;
 
 }

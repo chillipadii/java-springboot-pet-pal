@@ -44,11 +44,11 @@ public class ChatMessage {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    @JsonBackReference
     private Owner owner;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "id")
+    @JsonBackReference
     private ChatRoom chatRoom;
     
 }
