@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sg.com.petpal.petpal.model.Owner;
 
 import java.util.List;
 

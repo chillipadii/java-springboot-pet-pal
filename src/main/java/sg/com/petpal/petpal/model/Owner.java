@@ -2,6 +2,7 @@ package sg.com.petpal.petpal.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -12,10 +13,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "owners")
+@Table(name = "owner")
 public class Owner {
 
     @Id
@@ -67,12 +68,21 @@ public class Owner {
     // @JsonManagedReference
     // private List<Pet> pets;
 
-    public Owner(String name, @Valid List<ValidOwnerMatches> ownerMatches, String areaLocation) {
-        this();
-        this.name = name;
-        this.ownerMatches = ownerMatches;
-        this.areaLocation = areaLocation;
-    }
+    // public Owner(String name, @Valid List<ValidOwnerMatches> ownerMatches, String areaLocation) {
+    //     this();
+    //     this.name = name;
+    //     this.ownerMatches = ownerMatches;
+    //     this.areaLocation = areaLocation;
+    // }
+
+    // Dexter - Start
+    @ManyToMany(mappedBy = "owners", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonBackReference
+    private List<ChatRoom> chatRooms;
+
+    @OneToOne(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private ChatMessage chatMessage;
+    // Dexter - End
 }
 
 @Getter

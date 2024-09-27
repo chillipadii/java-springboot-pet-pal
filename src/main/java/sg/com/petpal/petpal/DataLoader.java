@@ -4,6 +4,19 @@ package sg.com.petpal.petpal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import sg.com.petpal.petpal.model.ChatMessage;
+import sg.com.petpal.petpal.model.ChatRoom;
+import sg.com.petpal.petpal.model.Owner;
+import sg.com.petpal.petpal.repository.ChatMessageRepository;
+import sg.com.petpal.petpal.repository.ChatRoomRepository;
+import sg.com.petpal.petpal.repository.OwnerRepository;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import sg.com.petpal.petpal.model.Gender;
 import sg.com.petpal.petpal.model.Pet;
 import sg.com.petpal.petpal.repository.PetRepository;
@@ -11,16 +24,32 @@ import sg.com.petpal.petpal.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
-public class DataLoader implements CommandLineRunner {
+// public class DataLoader implements CommandLineRunner {
+public class DataLoader {
 
     //@Autowired
     //private OwnerRepository ownerRepository;
 
-    @Autowired
+    // @Autowired
     private PetRepository petRepository;
+    private OwnerRepository ownerRepository;
+    private ChatRoomRepository chatRoomRepository;
+    private ChatMessageRepository chatMessageRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
+    public DataLoader(PetRepository petRepository, OwnerRepository ownerRepository,
+        ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
+            this.petRepository = petRepository;
+            this.ownerRepository = ownerRepository;
+            this.chatRoomRepository = chatRoomRepository;
+            this.chatMessageRepository = chatMessageRepository;
+    }
+
+    // @Override
+    // public void run(String... args) throws Exception {
+    @PostConstruct
+    public void loadData() {
+
+        deleteAllExistingData();
         
         // Create the fist Pet (Buddy)
         Pet pet1 = new Pet();
@@ -59,5 +88,57 @@ public class DataLoader implements CommandLineRunner {
         //ownerRepository.save(owner);
         petRepository.save(pet3);
 
+        List<Owner> owners = loadOwnerData(3);
+        ChatRoom newChatRoom = loadChatRoomData(owners);
+        List<ChatMessage> chatMessages = loadChatMessageData(3, owners, newChatRoom);
+        
+        chatRoomRepository.save(newChatRoom);
+        ownerRepository.saveAll(owners);
+        // chatMessageRepository.saveAll(chatMessages);
+        
     }
+
+    private void deleteAllExistingData() {
+        // petRepository.deleteAll();
+        chatRoomRepository.deleteAll();
+        chatMessageRepository.deleteAll();
+    }
+
+    // Create 3 owners
+    private List<Owner> loadOwnerData(int quantity) {
+        List<Owner> owners = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            Owner newOwner = Owner.builder()
+                .name("petpalowner" + i)
+                .areaLocation("NTU Street " + i)
+                .ownerAuth(null)
+                .build();
+            owners.add(newOwner);
+        }
+        return owners;
+    }
+    
+    // Create 1 chat room
+    private ChatRoom loadChatRoomData(List<Owner> owners) {
+        return ChatRoom.builder()
+            .owners(owners)
+            .build();
+    }
+
+    // Create 3 chat messages for 1 owner, 1 chat room
+    private List<ChatMessage> loadChatMessageData(int quantity, List<Owner> owners, ChatRoom newChatRoom) {
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            ChatMessage newChatMessage = ChatMessage.builder()
+                .createdTimestamp(LocalDateTime.now())
+                .updatedTimestamp(LocalDateTime.now())
+                .message("Chat Message " + i)
+                .owner(owners.get(0))
+                .chatRoom(newChatRoom)
+                .build();
+            chatMessages.add(newChatMessage);
+        }
+        return chatMessages;
+    }
+
 }
