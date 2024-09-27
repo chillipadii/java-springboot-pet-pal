@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
@@ -64,9 +65,9 @@ public class Owner {
         }
     }
 
-    // @OneToMany(mappedBy = "owner, cascade = CascadeType.ALL)
-    // @JsonManagedReference
-    // private List<Pet> pets;
+    @OneToMany (mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Pet> pets;
 
     // public Owner(String name, @Valid List<ValidOwnerMatches> ownerMatches, String areaLocation) {
     //     this();
