@@ -8,11 +8,11 @@ public interface PetDataService {
 
     PetData createPetData(PetData petData);
 
-    PetData getOwner(Long id);
+    PetData getPetData(Long id);
 
-    ArrayList<PetData> getAllOwners();
+    ArrayList<PetData> getAllPetData();
 
-    PetData updateOwner(PetData petData);
+    PetData updatePetData(PetData petData);
 
     void deletePetData(Long id);
 }

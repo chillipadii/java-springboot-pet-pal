@@ -1,18 +1,16 @@
 package sg.com.petpal.petpal.model;
 
-import akarta.persisten
-
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import 
-
-
-import java.util.List;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pet_data")
 public class PetData {
 
@@ -26,10 +24,4 @@ public class PetData {
 
     @Column(name = "animal_group", nullable = false)
     private String animalGroup;
-
-    @ElementCollection
-    @Column(name = "pet")
-    private List<Long> pet;
 }
-
-    
