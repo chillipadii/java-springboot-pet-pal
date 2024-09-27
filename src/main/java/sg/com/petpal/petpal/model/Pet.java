@@ -10,6 +10,8 @@ import sg.com.petpal.petpal.model.Owner;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,6 +47,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @JsonBackReference
     private Owner owner;
 
     @ManyToOne
