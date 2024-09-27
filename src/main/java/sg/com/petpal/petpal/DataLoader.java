@@ -1,54 +1,39 @@
 package sg.com.petpal.petpal;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
-import sg.com.petpal.petpal.model.ChatMessage;
-import sg.com.petpal.petpal.model.ChatRoom;
-import sg.com.petpal.petpal.model.Owner;
-import sg.com.petpal.petpal.repository.ChatMessageRepository;
-import sg.com.petpal.petpal.repository.ChatRoomRepository;
-import sg.com.petpal.petpal.repository.OwnerRepository;
-import sg.com.petpal.petpal.repository.PetDataRepository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
+import sg.com.petpal.petpal.model.ChatMessage;
+import sg.com.petpal.petpal.model.ChatRoom;
 import sg.com.petpal.petpal.model.Gender;
+import sg.com.petpal.petpal.model.Owner;
 import sg.com.petpal.petpal.model.Pet;
 import sg.com.petpal.petpal.model.PetData;
+import sg.com.petpal.petpal.repository.ChatMessageRepository;
+import sg.com.petpal.petpal.repository.ChatRoomRepository;
+import sg.com.petpal.petpal.repository.PetDataRepository;
 import sg.com.petpal.petpal.repository.PetRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 @Component
-// public class DataLoader implements CommandLineRunner {
 public class DataLoader {
 
-    // @Autowired
-    // private OwnerRepository ownerRepository;
-
-    // @Autowired
     private PetRepository petRepository;
     private PetDataRepository petDataRepository;
-    private OwnerRepository ownerRepository;
     private ChatRoomRepository chatRoomRepository;
     private ChatMessageRepository chatMessageRepository;
 
-    public DataLoader(PetRepository petRepository, OwnerRepository ownerRepository, PetDataRepository petDataRepository,
+    public DataLoader(PetRepository petRepository, PetDataRepository petDataRepository,
             ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
         this.petRepository = petRepository;
         this.petDataRepository = petDataRepository;
-        this.ownerRepository = ownerRepository;
         this.chatRoomRepository = chatRoomRepository;
         this.chatMessageRepository = chatMessageRepository;
     }
 
-    // @Override
-    // public void run(String... args) throws Exception {
     @PostConstruct
     public void loadData() {
 
@@ -90,16 +75,15 @@ public class DataLoader {
         // ownerRepository.save(owner);
         petRepository.save(pet3);
 
-        List<Owner> owners = loadOwnerData(3);
-        ChatRoom newChatRoom = loadChatRoomData(owners);
-        List<ChatMessage> chatMessages = loadChatMessageData(3, owners, newChatRoom);
-
+        List<Owner> newOwners = loadOwnersData(3);
+        ChatRoom newChatRoom = loadChatRoomData(newOwners);
+        List<ChatMessage> newChatMessages = loadChatMessagesData(3, newChatRoom, newOwners.get(0));
+        
         chatRoomRepository.save(newChatRoom);
-        ownerRepository.saveAll(owners);
-        // chatMessageRepository.saveAll(chatMessages);
+        chatMessageRepository.saveAll(newChatMessages);
 
         loadPetDataInfo();
-
+        
     }
 
     private void deleteAllExistingData() {
@@ -109,7 +93,7 @@ public class DataLoader {
     }
 
     // Create 3 owners
-    private List<Owner> loadOwnerData(int quantity) {
+    private List<Owner> loadOwnersData(int quantity) {
         List<Owner> owners = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             Owner newOwner = Owner.builder()
@@ -130,16 +114,16 @@ public class DataLoader {
     }
 
     // Create 3 chat messages for 1 owner, 1 chat room
-    private List<ChatMessage> loadChatMessageData(int quantity, List<Owner> owners, ChatRoom newChatRoom) {
+    private List<ChatMessage> loadChatMessagesData(int quantity, ChatRoom newChatRoom, Owner newOwner) {
         List<ChatMessage> chatMessages = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             ChatMessage newChatMessage = ChatMessage.builder()
-                    .createdTimestamp(LocalDateTime.now())
-                    .updatedTimestamp(LocalDateTime.now())
-                    .message("Chat Message " + i)
-                    .owner(owners.get(0))
-                    .chatRoom(newChatRoom)
-                    .build();
+                .createdTimestamp(LocalDateTime.now())
+                .updatedTimestamp(LocalDateTime.now())
+                .message("Chat Message " + i)
+                .owner(newOwner)
+                .chatRoom(newChatRoom)
+                .build();
             chatMessages.add(newChatMessage);
         }
         return chatMessages;
