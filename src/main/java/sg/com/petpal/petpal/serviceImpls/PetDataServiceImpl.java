@@ -1,12 +1,15 @@
-package sg.com.petpal.petpal.service;
+package sg.com.petpal.petpal.serviceImpls;
 
 import java.util.ArrayList;
 
+import java.util.Optional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import sg.com.petpal.petpal.exception.PetDataNotFoundException;
 import sg.com.petpal.petpal.model.PetData;
 import sg.com.petpal.petpal.repository.PetDataRepository;
+import sg.com.petpal.petpal.service.PetDataService;
 
 @Primary
 @Service
@@ -25,7 +28,12 @@ public class PetDataServiceImpl implements PetDataService {
 
     @Override
     public PetData getPetData(Long id) {
-        return petDataRepository.findById(id).get();
+        Optional<PetData> petData = petDataRepository.findById(id);
+        if (petData.isPresent()) {
+            return petData.get();
+        }
+
+        throw new PetDataNotFoundException(id);
     }
 
     @Override

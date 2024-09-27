@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sg.com.petpal.petpal.exception.PetDataNotFoundException;
 import sg.com.petpal.petpal.model.PetData;
 import sg.com.petpal.petpal.service.PetDataService;;
 
@@ -33,7 +34,13 @@ public class PetDataController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PetData> getPetData(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(petDataService.getPetData(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(petDataService.getPetData(id), HttpStatus.OK);
+        } catch (PetDataNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
