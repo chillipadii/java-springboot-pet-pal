@@ -1,7 +1,10 @@
 package sg.com.petpal.petpal.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "pet_data")
@@ -24,4 +28,7 @@ public class PetData {
 
     @Column(name = "animal_group", nullable = false)
     private String animalGroup;
+
+    @OneToMany(mappedBy = "petData", cascade = CascadeType.ALL)
+    private List<Pet> pets;
 }
