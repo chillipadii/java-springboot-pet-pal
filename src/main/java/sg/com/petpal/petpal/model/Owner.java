@@ -45,6 +45,7 @@ public class Owner {
     private String name;
 
     // Fix: Use @ElementCollection to handle non-entity collection
+    // Remember to not allow duplicate ids
     @Valid
     @ElementCollection
     @Column(name = "ownerMatches")

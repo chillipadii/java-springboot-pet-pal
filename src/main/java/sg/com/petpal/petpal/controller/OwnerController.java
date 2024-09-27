@@ -1,14 +1,14 @@
 package sg.com.petpal.petpal.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import sg.com.petpal.petpal.dto.OwnerCreateDTO;
-import sg.com.petpal.petpal.dto.OwnerUpdateDTO;
-import sg.com.petpal.petpal.model.Owner;
+import sg.com.petpal.petpal.dto.owner.OwnerCreateDTO;
+import sg.com.petpal.petpal.dto.owner.OwnerBasicDTO;
+import sg.com.petpal.petpal.dto.owner.OwnerUpdateDTO;
 import sg.com.petpal.petpal.service.OwnerService;
 
 import org.springframework.http.HttpStatus;
@@ -32,37 +32,38 @@ public class OwnerController {
 
     // Get all owners
     @GetMapping({ "/", "" })
-    public ResponseEntity<ArrayList<Owner>> getOwners() {
-        ArrayList<Owner> allOwners = ownerService.getAllOwners();
+    public ResponseEntity<List<OwnerBasicDTO>> getOwners() {
+        List<OwnerBasicDTO> allOwners = ownerService.getAllOwners();
         return ResponseEntity.status(HttpStatus.OK).body(allOwners);
 
     }
 
     // Get owner by id
     @GetMapping("/{id}")
-    public ResponseEntity<Owner> getOwner(@PathVariable Long id) {
-        Owner owner = ownerService.getOwner(id);
+    public ResponseEntity<OwnerBasicDTO> getOwner(@PathVariable Long id) {
+        OwnerBasicDTO owner = ownerService.getOwner(id);
         return ResponseEntity.status(HttpStatus.OK).body(owner);
     }
 
     // Create owner
-    @PostMapping({ "/", "" })
-    public ResponseEntity<Owner> createOwner(@Valid @RequestBody OwnerCreateDTO dto) {
-        Owner owner = ownerService.createOwner(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(owner);
+    @PostMapping("/new")
+    public ResponseEntity<OwnerBasicDTO> createOwner(@Valid @RequestBody OwnerCreateDTO dto) {
+        System.out.println("Engaged createOwner POST API");
+        OwnerBasicDTO response = ownerService.createOwner(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // Delete owner
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteOwner(@PathVariable Long id) {
         ownerService.deleteOwner(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     // Update owner
     @PatchMapping("/{id}")
-    public ResponseEntity<Owner> updateOwner(@PathVariable Long id, @RequestBody OwnerUpdateDTO dto) {
-        Owner owner = ownerService.updateOwner(dto);
+    public ResponseEntity<OwnerBasicDTO> updateOwner(@PathVariable Long id, @RequestBody OwnerUpdateDTO dto) {
+        OwnerBasicDTO owner = ownerService.updateOwner(id, dto);
         return ResponseEntity.status(HttpStatus.OK).body(owner);
     }
 

@@ -1,6 +1,7 @@
 package sg.com.petpal.petpal.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Table(name = "owner_auth")
 public class OwnerAuth {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

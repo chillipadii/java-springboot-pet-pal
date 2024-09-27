@@ -1,13 +1,13 @@
 package sg.com.petpal.petpal;
 
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import sg.com.petpal.petpal.model.ChatMessage;
 import sg.com.petpal.petpal.model.ChatRoom;
 import sg.com.petpal.petpal.model.Owner;
+import sg.com.petpal.petpal.model.OwnerAuth;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
 import sg.com.petpal.petpal.repository.ChatRoomRepository;
 import sg.com.petpal.petpal.repository.OwnerRepository;
@@ -16,13 +16,10 @@ import sg.com.petpal.petpal.repository.PetDataRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import sg.com.petpal.petpal.model.Gender;
 import sg.com.petpal.petpal.model.Pet;
 import sg.com.petpal.petpal.model.PetData;
 import sg.com.petpal.petpal.repository.PetRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 // public class DataLoader implements CommandLineRunner {
@@ -37,14 +34,17 @@ public class DataLoader {
     private OwnerRepository ownerRepository;
     private ChatRoomRepository chatRoomRepository;
     private ChatMessageRepository chatMessageRepository;
+    private PasswordEncoder passwordEncoder;
 
     public DataLoader(PetRepository petRepository, OwnerRepository ownerRepository, PetDataRepository petDataRepository,
-            ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository) {
+            ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository,
+            PasswordEncoder passwordEncoder) {
         this.petRepository = petRepository;
         this.petDataRepository = petDataRepository;
         this.ownerRepository = ownerRepository;
         this.chatRoomRepository = chatRoomRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // @Override
@@ -111,14 +111,42 @@ public class DataLoader {
     // Create 3 owners
     private List<Owner> loadOwnerData(int quantity) {
         List<Owner> owners = new ArrayList<>();
-        for (int i = 0; i < quantity; i++) {
-            Owner newOwner = Owner.builder()
-                    .name("petpalowner" + i)
-                    .areaLocation("NTU Street " + i)
-                    .ownerAuth(null)
-                    .build();
-            owners.add(newOwner);
-        }
+        Owner owner = Owner.builder()
+                .name("Tom")
+                .areaLocation("NTU Street 1")
+                .build();
+        OwnerAuth ownerAuth = OwnerAuth.builder()
+                .email("tom@test.com")
+                .password(passwordEncoder.encode("tompass"))
+                .build();
+        owner.setOwnerAuth(ownerAuth);
+        ownerAuth.setOwner(owner);
+        owners.add(owner);
+
+        Owner owner2 = Owner.builder()
+                .name("Dick")
+                .areaLocation("NTU Street 2")
+                .build();
+        OwnerAuth ownerAuth2 = OwnerAuth.builder()
+                .email("dick@test.com")
+                .password(passwordEncoder.encode("dickpass"))
+                .build();
+        owner2.setOwnerAuth(ownerAuth2);
+        ownerAuth2.setOwner(owner2);
+        owners.add(owner2);
+
+        Owner owner3 = Owner.builder()
+                .name("Harry")
+                .areaLocation("NTU Street 2")
+                .build();
+        OwnerAuth ownerAuth3 = OwnerAuth.builder()
+                .email("harry@test.com")
+                .password(passwordEncoder.encode("harrypass"))
+                .build();
+        owner3.setOwnerAuth(ownerAuth3);
+        ownerAuth3.setOwner(owner3);
+        owners.add(owner3);
+
         return owners;
     }
 
