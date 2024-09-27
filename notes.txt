@@ -109,7 +109,7 @@ ChatMessage.java
     "createdTimestamp": LocalDateTime,
     "updatedTimestamp": LocalDateTime,
     "message": String,
-    "owner": Owner                  // @OneToOne - Owner.id
+    "owner": Owner                  // @ManyToOne - Owner.id
     "chatRoom": ChatRoom,           // @ManyToOne - ChatRoom.id
 }
 

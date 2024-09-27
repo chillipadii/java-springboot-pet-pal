@@ -3,6 +3,7 @@ package sg.com.petpal.petpal.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -82,8 +83,9 @@ public class Owner {
     @JsonBackReference
     private List<ChatRoom> chatRooms;
 
-    @OneToOne(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private ChatMessage chatMessage;
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
+    private List<ChatMessage> chatMessages;
     // Dexter - End
 }
 

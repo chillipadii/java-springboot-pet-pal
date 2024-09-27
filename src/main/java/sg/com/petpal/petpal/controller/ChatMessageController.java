@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import sg.com.petpal.petpal.dto.ChatMessageOwnerDto;
 import sg.com.petpal.petpal.model.ChatMessage;
 import sg.com.petpal.petpal.service.ChatMessageService;
 
@@ -28,8 +30,8 @@ public class ChatMessageController {
     }
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<ChatMessage>> findAllChatMessage() {
-        return ResponseEntity.ok(chatMessageService.findAllChatMessages());
+    public ResponseEntity<List<ChatMessage>> findChatRoomAllMessages(@RequestParam(required = false) UUID chatRoomId) {
+        return ResponseEntity.ok(chatMessageService.findChatRoomAllMessages(chatRoomId));
     }
 
     @GetMapping("/{id}")
@@ -38,17 +40,17 @@ public class ChatMessageController {
     }
 
     @PostMapping({"", "/"})
-    public ResponseEntity<ChatMessage> createChatMessage(@RequestBody ChatMessage chatMessage) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(chatMessageService.createChatMessage(chatMessage));
+    public ResponseEntity<ChatMessage> createChatMessage(@RequestParam UUID chatRoomId, @RequestBody ChatMessageOwnerDto chatMessageOwnerDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(chatMessageService.createChatMessage(chatRoomId, chatMessageOwnerDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChatMessage> updateChatMessageById(@PathVariable UUID id, @RequestBody ChatMessage chatMessage) {
-        return ResponseEntity.ok(chatMessageService.updateChatMessageById(id, chatMessage));
+    public ResponseEntity<ChatMessage> updateChatMessageById(@PathVariable UUID id, @RequestBody ChatMessageOwnerDto chatMessageOwnerDto) {
+        return ResponseEntity.ok(chatMessageService.updateChatMessageById(id, chatMessageOwnerDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ChatMessage> deleteChatMessageById(@PathVariable UUID id) {
+    public ResponseEntity<HttpStatus> deleteChatMessageById(@PathVariable UUID id) {
         chatMessageService.deleteChatMessageById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
