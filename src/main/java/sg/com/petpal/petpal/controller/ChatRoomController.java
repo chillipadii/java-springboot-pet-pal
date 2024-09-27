@@ -44,8 +44,8 @@ public class ChatRoomController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChatRoom> updateChatRoomById(@PathVariable UUID id, @RequestBody ChatRoom chatRoom) {
-        return ResponseEntity.ok(chatRoomService.updateChatRoomById(id, chatRoom));
+    public ResponseEntity<ChatRoom> updateChatRoomById(@PathVariable UUID id, @RequestBody ChatRoomOwnersDto chatRoomOwnersDto) {
+        return ResponseEntity.ok(chatRoomService.updateChatRoomById(id, chatRoomOwnersDto));
     }
 
     @DeleteMapping("/{id}")
