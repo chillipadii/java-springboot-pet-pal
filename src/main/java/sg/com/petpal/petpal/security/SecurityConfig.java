@@ -2,18 +2,29 @@ package sg.com.petpal.petpal.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JwtTokenFilter jwtTokenFilter;
+    private final MyUserDetailsService userDetailsService;
+
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, MyUserDetailsService myUserDetailsService) {
+        this.jwtTokenFilter = jwtTokenFilter;
+        this.userDetailsService = myUserDetailsService;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,9 +39,13 @@ public class SecurityConfig {
                     ex.getMessage());
         }));
 
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .anyRequest().permitAll());
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated());
+                        // .anyRequest().permitAll());
 
         return http.build();
     }
@@ -43,6 +58,15 @@ public class SecurityConfig {
         int memory = 1 << 12; // 4 MB of memory
         int iterations = 3; // 3 iterations
         return new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+            throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        return authenticationManagerBuilder.build();
     }
 
 }
