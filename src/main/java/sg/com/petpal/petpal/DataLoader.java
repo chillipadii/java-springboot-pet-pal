@@ -58,7 +58,7 @@ public class DataLoader {
         chatRoomRepository.save(newChatRoom);
         chatMessageRepository.saveAll(newChatMessages);
 
-        List<Owner> newerOwners = loadOwnersData(3);
+        List<Owner> newerOwners = loadNewerOwnersData(3);
         List<Pet> newerPets = loadPetInfo(newerOwners);
         ownerRepository.saveAll(newerOwners);
         petRepository.saveAll(newerPets);
@@ -106,6 +106,47 @@ public class DataLoader {
         OwnerAuth ownerAuth3 = OwnerAuth.builder()
                 .email("harry@test.com")
                 .password(passwordEncoder.encode("harrypass"))
+                .build();
+        owner3.setOwnerAuth(ownerAuth3);
+        ownerAuth3.setOwner(owner3);
+        owners.add(owner3);
+
+        return owners;
+    }
+
+    private List<Owner> loadNewerOwnersData(int quantity) {
+        List<Owner> owners = new ArrayList<>();
+        Owner owner = Owner.builder()
+                .name("John")
+                .areaLocation("NTU Street 1")
+                .build();
+        OwnerAuth ownerAuth = OwnerAuth.builder()
+                .email("john@test.com")
+                .password(passwordEncoder.encode("johnpass"))
+                .build();
+        owner.setOwnerAuth(ownerAuth);
+        ownerAuth.setOwner(owner);
+        owners.add(owner);
+
+        Owner owner2 = Owner.builder()
+                .name("Peter")
+                .areaLocation("NTU Street 2")
+                .build();
+        OwnerAuth ownerAuth2 = OwnerAuth.builder()
+                .email("peter@test.com")
+                .password(passwordEncoder.encode("peterpass"))
+                .build();
+        owner2.setOwnerAuth(ownerAuth2);
+        ownerAuth2.setOwner(owner2);
+        owners.add(owner2);
+
+        Owner owner3 = Owner.builder()
+                .name("Potter")
+                .areaLocation("NTU Street 2")
+                .build();
+        OwnerAuth ownerAuth3 = OwnerAuth.builder()
+                .email("potter@test.com")
+                .password(passwordEncoder.encode("potterpass"))
                 .build();
         owner3.setOwnerAuth(ownerAuth3);
         ownerAuth3.setOwner(owner3);
