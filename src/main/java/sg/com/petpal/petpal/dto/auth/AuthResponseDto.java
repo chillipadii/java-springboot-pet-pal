@@ -1,11 +1,11 @@
-package sg.com.petpal.petpal.dto.owner;
+package sg.com.petpal.petpal.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class OwnerBasicDTO {
+public class AuthResponseDto {
 
     private final Long id;
 
@@ -14,5 +14,7 @@ public class OwnerBasicDTO {
     private final String areaLocation;
     
     private final String email;
+
+    private final String jwtToken;
 
 }
