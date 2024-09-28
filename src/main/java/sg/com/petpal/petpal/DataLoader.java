@@ -17,6 +17,7 @@ import sg.com.petpal.petpal.model.PetData;
 import sg.com.petpal.petpal.model.OwnerAuth;
 import sg.com.petpal.petpal.repository.ChatMessageRepository;
 import sg.com.petpal.petpal.repository.ChatRoomRepository;
+import sg.com.petpal.petpal.repository.OwnerRepository;
 import sg.com.petpal.petpal.repository.PetDataRepository;
 import sg.com.petpal.petpal.repository.PetRepository;
 
@@ -30,13 +31,13 @@ public class DataLoader {
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(PetRepository petRepository, PetDataRepository petDataRepository,
-            ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository,
-            PasswordEncoder passwordEncoder) {
-        this.petRepository = petRepository;
-        this.petDataRepository = petDataRepository;
-        this.chatRoomRepository = chatRoomRepository;
-        this.chatMessageRepository = chatMessageRepository;
-        this.passwordEncoder = passwordEncoder;
+        ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository,
+        PasswordEncoder passwordEncoder) {
+            this.petRepository = petRepository;
+            this.petDataRepository = petDataRepository;
+            this.chatRoomRepository = chatRoomRepository;
+            this.chatMessageRepository = chatMessageRepository;
+            this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -44,55 +45,22 @@ public class DataLoader {
 
         deleteAllExistingData();
 
-        // Create the fist Pet (Buddy)
-        Pet pet1 = new Pet();
-        pet1.setName("Buddy");
-        pet1.setGender(Gender.MALE);
-        pet1.setAge(2);
-        pet1.setNeutered(true);
-        // pet.setOwner(owner);
-
-        // Save Owner and Pet
-        // ownerRepository.save(owner);
-        petRepository.save(pet1);
-
-        // Create the second Pet (Happy)
-        Pet pet2 = new Pet();
-        pet2.setName("Happy");
-        pet2.setGender(Gender.FEMALE);
-        pet2.setAge(3);
-        pet2.setNeutered(false);
-        // pet.setOwner(owner);
-
-        // Save Owner and Pet
-        // ownerRepository.save(owner);
-        petRepository.save(pet2);
-
-        // Create the third Pet (Charlie)
-        Pet pet3 = new Pet();
-        pet3.setName("Charlie");
-        pet3.setGender(Gender.MALE);
-        pet3.setAge(2);
-        pet3.setNeutered(false);
-        // pet.setOwner(owner);
-
-        // Save Owner and Pet
-        // ownerRepository.save(owner);
-        petRepository.save(pet3);
-
         List<Owner> newOwners = loadOwnersData(3);
+        List<Pet> newPets = loadPetInfo(newOwners);
+        List<PetData> petDataList = loadPetDataInfo(newPets);
         ChatRoom newChatRoom = loadChatRoomData(newOwners);
         List<ChatMessage> newChatMessages = loadChatMessagesData(3, newChatRoom, newOwners.get(0));
         
+        // petRepository.saveAll(newPets);
+        petDataRepository.saveAll(petDataList);
         chatRoomRepository.save(newChatRoom);
         chatMessageRepository.saveAll(newChatMessages);
-
-        loadPetDataInfo();
         
     }
 
     private void deleteAllExistingData() {
-        // petRepository.deleteAll();
+        petRepository.deleteAll();
+        petDataRepository.deleteAll();
         chatRoomRepository.deleteAll();
         chatMessageRepository.deleteAll();
     }
@@ -139,11 +107,90 @@ public class DataLoader {
         return owners;
     }
 
+    private List<Pet> loadPetInfo(List<Owner> owners) {
+        List<Pet> pets = new ArrayList<>();
+        if (owners.size() == 3) {
+            for (int i = 0; i < owners.size(); i++) {
+                switch (i) {
+                    case 1: {
+                        Pet pet1 = new Pet();
+                        pet1.setName("Buddy");
+                        pet1.setGender(Gender.MALE);
+                        pet1.setAge(2);
+                        pet1.setNeutered(true);
+                        pet1.setOwner(owners.get(i));
+                        pets.add(pet1);
+                        break;
+                    }
+                    case 2: {
+                        Pet pet2 = new Pet();
+                        pet2.setName("Happy");
+                        pet2.setGender(Gender.FEMALE);
+                        pet2.setAge(3);
+                        pet2.setNeutered(false);
+                        pet2.setOwner(owners.get(i));
+                        pets.add(pet2);
+                        break;
+                    }
+                    case 3: {
+                        Pet pet3 = new Pet();
+                        pet3.setName("Charlie");
+                        pet3.setGender(Gender.MALE);
+                        pet3.setAge(2);
+                        pet3.setNeutered(false);
+                        pet3.setOwner(owners.get(i));
+                        pets.add(pet3);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        }
+        return pets;
+    }
+
+    private List<PetData> loadPetDataInfo(List<Pet> pets) {
+        List<PetData> petDataList = new ArrayList<>();
+        PetData petData1 = PetData.builder()
+            .breed("Golden Retriever")
+            .animalGroup("Dog")
+            // .pets(pets)
+            .build();
+        petDataList.add(petData1);
+
+        PetData petData2 = PetData.builder()
+            .breed("Maltipoo")
+            .animalGroup("Dog")
+            .build();
+        petDataList.add(petData2);
+
+        PetData petData3 = PetData.builder()
+            .breed("Chow Chow")
+            .animalGroup("Dog")
+            .build();
+        petDataList.add(petData3);
+
+        PetData petData4 = PetData.builder()
+            .breed("Green Cheek Conure")
+            .animalGroup("Parrot")
+            .build();
+        petDataList.add(petData4);
+
+        PetData petData5 = PetData.builder()
+            .breed("Red-sided Eclectus")
+            .animalGroup("Parrot")
+            .build();
+        petDataList.add(petData5);
+
+        return petDataList;
+    }
+
     // Create 1 chat room
     private ChatRoom loadChatRoomData(List<Owner> owners) {
         return ChatRoom.builder()
-                .owners(owners)
-                .build();
+            .owners(owners)
+            .build();
     }
 
     // Create 3 chat messages for 1 owner, 1 chat room
@@ -160,37 +207,5 @@ public class DataLoader {
             chatMessages.add(newChatMessage);
         }
         return chatMessages;
-    }
-
-    private void loadPetDataInfo() {
-        PetData petData1 = PetData.builder()
-                .breed("Golden Retriever")
-                .animalGroup("Dog")
-                .build();
-        petDataRepository.save(petData1);
-
-        PetData petData2 = PetData.builder()
-                .breed("Maltipoo")
-                .animalGroup("Dog")
-                .build();
-        petDataRepository.save(petData2);
-
-        PetData petData3 = PetData.builder()
-                .breed("Chow Chow")
-                .animalGroup("Dog")
-                .build();
-        petDataRepository.save(petData3);
-
-        PetData petData4 = PetData.builder()
-                .breed("Green Cheek Conure")
-                .animalGroup("Parrot")
-                .build();
-        petDataRepository.save(petData4);
-
-        PetData petData5 = PetData.builder()
-                .breed("Red-sided Eclectus")
-                .animalGroup("Parrot")
-                .build();
-        petDataRepository.save(petData5);
     }
 }
