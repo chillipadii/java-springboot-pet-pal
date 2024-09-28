@@ -28,15 +28,17 @@ public class DataLoader {
     private PetDataRepository petDataRepository;
     private ChatRoomRepository chatRoomRepository;
     private ChatMessageRepository chatMessageRepository;
+    private OwnerRepository ownerRepository;
     private PasswordEncoder passwordEncoder;
 
     public DataLoader(PetRepository petRepository, PetDataRepository petDataRepository,
         ChatRoomRepository chatRoomRepository, ChatMessageRepository chatMessageRepository,
-        PasswordEncoder passwordEncoder) {
+        OwnerRepository ownerRepository, PasswordEncoder passwordEncoder) {
             this.petRepository = petRepository;
             this.petDataRepository = petDataRepository;
             this.chatRoomRepository = chatRoomRepository;
             this.chatMessageRepository = chatMessageRepository;
+            this.ownerRepository = ownerRepository;
             this.passwordEncoder = passwordEncoder;
     }
 
@@ -55,6 +57,11 @@ public class DataLoader {
         petDataRepository.saveAll(petDataList);
         chatRoomRepository.save(newChatRoom);
         chatMessageRepository.saveAll(newChatMessages);
+
+        List<Owner> newerOwners = loadOwnersData(3);
+        List<Pet> newerPets = loadPetInfo(newerOwners);
+        ownerRepository.saveAll(newerOwners);
+        petRepository.saveAll(newerPets);
         
     }
 
@@ -112,7 +119,7 @@ public class DataLoader {
         if (owners.size() == 3) {
             for (int i = 0; i < owners.size(); i++) {
                 switch (i) {
-                    case 1: {
+                    case 0: {
                         Pet pet1 = new Pet();
                         pet1.setName("Buddy");
                         pet1.setGender(Gender.MALE);
@@ -122,7 +129,7 @@ public class DataLoader {
                         pets.add(pet1);
                         break;
                     }
-                    case 2: {
+                    case 1: {
                         Pet pet2 = new Pet();
                         pet2.setName("Happy");
                         pet2.setGender(Gender.FEMALE);
@@ -132,7 +139,7 @@ public class DataLoader {
                         pets.add(pet2);
                         break;
                     }
-                    case 3: {
+                    case 2: {
                         Pet pet3 = new Pet();
                         pet3.setName("Charlie");
                         pet3.setGender(Gender.MALE);
