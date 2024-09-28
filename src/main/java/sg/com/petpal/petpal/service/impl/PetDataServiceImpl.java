@@ -1,4 +1,4 @@
-package sg.com.petpal.petpal.serviceImpls;
+package sg.com.petpal.petpal.service.impl;
 
 import java.util.ArrayList;
 
